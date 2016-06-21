@@ -15,8 +15,9 @@ from flask import flash
 
 from flask.ext.bcrypt import Bcrypt
 
+import os
+
 from datetime import timedelta
-from os import listdir, makedirs
 from random import choice
 from shutil import copyfile
 from pandas import Series, DataFrame, read_csv, read_json
@@ -33,11 +34,11 @@ def write_groups(groups):
     groups.to_csv('data/groups.csv')
     
 def make_group(new):
-    makedirs('data/{}/default'.format(new))
-    makedirs('data/{}/current'.format(new))
+    os.makedirs('data/{}/default'.format(new))
+    os.makedirs('data/{}/current'.format(new))
 
 def add_user(group, user):
-    files = listdir('data/{}/default/'.format(group))
+    files = os.listdir('data/{}/default/'.format(group))
     if user in files:
         pass
     elif files:
@@ -50,7 +51,7 @@ def add_user(group, user):
         series.to_csv('data/{}/current/{}'.format(group, user))
         
 def read_full(group, folder='current'):
-    users = listdir('data/{}/{}/'.format(group,folder))
+    users = os.listdir('data/{}/{}/'.format(group,folder))
     series = []
     for u in users:
         path = 'data/{}/{}/{}'.format(group, folder, u)
@@ -235,5 +236,6 @@ def index():
 
 if __name__ == '__main__':
     app.debug = True
+    port = int(os.environ.get('PORT',5000))
     app.run(host='0.0.0.0', port=5000)
     

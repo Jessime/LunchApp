@@ -1,0 +1,140 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mobile material Flat Responsive Widget Template :: w3layouts</title>
+<!--Custom Theme files-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Mobile material widget template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login Signup Responsive web template, SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{{ url_for('static', filename = "css/style.css") }}" rel="stylesheet" type="text/css" media="all" />
+<!--web-fonts-->
+<link href='//fonts.googleapis.com/css?family=Jura:400,300,500,600' rel='stylesheet' type='text/css'>
+<link type="text/css" rel="stylesheet" href={{ url_for('static', filename = "css/jquery.mmenu.all.css") }} />
+<!--//web-fonts-->
+<!-- js -->
+<script src= {{ url_for('static', filename = "js/jquery-1.11.1.min.js") }}></script> 
+<script type="text/javascript" src= {{ url_for('static', filename = "js/jquery.mmenu.min.all.js") }}></script>
+<!-- //js -->
+<!-- chart -->
+<script src= {{ url_for('static', filename = "js/Chart.js") }}></script>
+<!-- //chart -->
+</head>
+<body>
+	<h1>Lunch-O-Matic</h1>
+	<!-- main -->
+	<div class="main">
+		<!--mobile-slider-->
+		<div class=" profile">
+			<div class="banner">
+				<div class="header-top">
+					<ul>
+						<li><span></span></li>
+						<li><span class="chrg"></span> </li>
+						<li>{{group}}</li>
+					</ul>
+				</div>
+				<div class="banner-text">
+					<section class="ac-container">
+						<div class="menu">
+							<input id="ac-5" name="accordion-1" type="checkbox" />
+							<label for="ac-5"><img src= {{ url_for('static', filename = "images/menu-icon.png") }} alt=""/></label>
+							<article class="ac-medium">
+								<ul class="nav">
+									<li><a href="#">Change Preferences</a></li>
+									<li><a href="#">Reset</a></li>
+									<li><a href="{{ url_for('index')}}">Home</a></li>
+								</ul> 
+							</article>
+						</div>
+					</section>
+					<div class="title">
+						<div class="title-left">
+							<img src= {{ url_for('static', filename = "images/img1.jpg") }} alt=""/>
+						</div>
+						<div class="title-right">
+							<h2>Welcome to Lunch, {{name}}!</h2>
+							<h6>Let's figure out what you're eating today.</h6>
+						</div>
+						<div class="clear"> </div>
+					</div>
+				</div>
+			</div>
+			<div class="profile-slider">
+
+				<table>
+				  <tr>
+				    <th>Points</th>
+				    <th>Restaurant</th>
+				    <th>Add</th>
+				    <th>Sub</th>
+				  </tr>
+				  {% for r, p in restaurants.items() %}
+					<tr>
+						<td id={{'points{}'.format(loop.index)}}>{{p}}</td>
+						<td id={{'rest{}'.format(loop.index)}}>{{r}}</td>
+						<td><a href="#" id={{'add{}'.format(loop.index)}} class="btn add">+</a></td>
+						<td><a href="#" id={{'sub{}'.format(loop.index)}} class="btn sub">-</a></td>
+					</tr>
+				  {% endfor %}
+				</table>
+
+				<script>
+				var restaurants = {{restaurants|safe}};
+				{% for r, p in restaurants.items() %}
+		                        $({{'add{}'.format(loop.index)}}).click(function(){
+						var values = $.map(restaurants, function(value, key) { return value });
+						var sum = values.reduce(function(a, b) { return a + b; }, 0);
+						var rest_name = $({{'rest{}'.format(loop.index)}}).text();
+						if (sum < 10) {
+							restaurants[rest_name] = restaurants[rest_name] + 1;
+							$({{'points{}'.format(loop.index)}}).text(restaurants[rest_name]);
+						}
+						else {
+							alert('You have used all 10 points.\n Remove a point from another restaurant.');
+						}
+						return false;
+		                        });
+
+					$({{'sub{}'.format(loop.index)}}).click(function(){
+						var rest_name = $({{'rest{}'.format(loop.index)}}).text();
+						if (restaurants[rest_name] > 0) {
+							restaurants[rest_name] = restaurants[rest_name] - 1;
+							$({{'points{}'.format(loop.index)}}).text(restaurants[rest_name]);
+						};
+						return false;					
+					});
+				{% endfor %}
+				</script>
+
+				<form id='restaurants_form' method="post">
+				  <div>
+				    <input type="hidden" value= '' id='restaurants_field' name="restaurants_field">
+				    <input type="submit" value='UPDATE' id='update'>
+				  </div>
+				</form>
+				<span></span>
+				 
+				<script>
+				$( "#restaurants_form" ).submit(function( event ) {
+					document.getElementById('restaurants_field').value = JSON.stringify(restaurants);
+				});
+				</script>
+
+
+			</div>
+		</div>
+		<!--//mobile-slider-->
+	</div>
+	<div class="copyright">
+		<p> &copy; 2016 Lunch-O-Matic. All rights reserved | Template by <a href="http://w3layouts.com/" target="_blank" >W3layouts</a></p>
+	</div>					
+</body>
+</html>

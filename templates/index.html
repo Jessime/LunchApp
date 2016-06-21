@@ -1,0 +1,101 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mobile material Flat Responsive Widget Template :: w3layouts</title>
+<!--Custom Theme files-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Mobile material widget template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login Signup Responsive web template, SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{{ url_for('static', filename = "css/style.css") }}" rel="stylesheet" type="text/css" media="all" />
+<!--web-fonts-->
+<link href='//fonts.googleapis.com/css?family=Jura:400,300,500,600' rel='stylesheet' type='text/css'>
+<link type="text/css" rel="stylesheet" href={{ url_for('static', filename = "css/jquery.mmenu.all.css") }} />
+<!--//web-fonts-->
+<!-- js -->
+<script src= {{ url_for('static', filename = "js/jquery-1.11.1.min.js") }}></script> 
+<script type="text/javascript" src= {{ url_for('static', filename = "js/jquery.mmenu.min.all.js") }}></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<!-- //js -->
+</head>
+<body>
+	<h1>Lunch-O-Matic</h1>
+	<!-- main -->
+	<div class="main">
+		<!--mobile-slider-->
+		<div class=" profile">
+			<div class="banner">
+				<div class="header-top">
+					<ul>
+						<li><span></span></li>
+						<li><span class="chrg"></span> </li>
+						<li>{{group}} </li>
+					</ul>
+				</div>
+				<div class="banner-text">
+					<section class="ac-container">
+						<div class="menu">
+							<input id="ac-5" name="accordion-1" type="checkbox" />
+							<label for="ac-5"><img src= {{ url_for('static', filename = "images/menu-icon.png") }} alt=""/></label>
+							<article class="ac-medium">
+								<ul class="nav">
+									<li><a href="{{ url_for('current_weights')}}">Change Preferences</a></li>
+									<li><a href="#">Reset</a></li>
+									<li><a href="{{ url_for('more')}}">More</a></li>
+								</ul> 
+							</article>
+						</div>
+					</section>
+					<div class="title">
+						<div class="title-left">
+							<img src= {{ url_for('static', filename = "images/img1.jpg") }} alt=""/>
+						</div>
+						<div class="title-right">
+							<h2>Welcome to Lunch, {{name}}!</h2>
+							<h6>Let's figure out what you're eating today.</h6>
+						</div>
+						<div class="clear"> </div>
+					</div>
+				</div>
+			</div>
+			<div class="profile-slider">
+				<a href="#" id="check_in" class="skip">CHECK IN</a>
+				<a href="#" id="pick_lunch" class="skip">PICK LUNCH</a>
+				<script>
+					$(document).ready(function(){
+						if({{here|safe}}===1){
+        						$("#check_in").text("Checked in!");
+							$("#check_in").css("background-color", "#9BFFAC");	
+						};
+    						$("#check_in").click(function(){
+							$.getJSON($SCRIPT_ROOT + '/check_in', function(){
+        							$("#check_in").text("Checked in!");
+								$("#check_in").css("background-color", "#9BFFAC");
+							});
+    						});
+                                
+				                $("#pick_lunch").click(function(){
+				                    $.getJSON($SCRIPT_ROOT + '/pick_lunch', function(data){
+				                        alert(data.result)
+				                        });
+				                });
+							});
+				</script>
+			</div>
+		</div>
+		<!--//mobile-slider-->
+	</div>
+	<div class="copyright">
+		<p> &copy; 2016 Lunch-O-Matic. All rights reserved | Template by <a href="http://w3layouts.com/" target="_blank" >W3layouts</a></p>
+	</div>					
+</body>
+</html>

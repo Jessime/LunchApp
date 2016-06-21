@@ -1,0 +1,77 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mobile material Flat Responsive Widget Template :: w3layouts</title>
+<!--Custom Theme files-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Mobile material widget template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login Signup Responsive web template, SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{{ url_for('static', filename = "css/style.css") }}" rel="stylesheet" type="text/css" media="all" />
+<!--web-fonts-->
+<link href='//fonts.googleapis.com/css?family=Jura:400,300,500,600' rel='stylesheet' type='text/css'>
+<link type="text/css" rel="stylesheet" href={{ url_for('static', filename = "css/jquery.mmenu.all.css") }} />
+<!--//web-fonts-->
+<!-- js -->
+<script src= {{ url_for('static', filename = "js/jquery-1.11.1.min.js") }}></script> 
+<script type="text/javascript" src= {{ url_for('static', filename = "js/jquery.mmenu.min.all.js") }}></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<!-- //js -->
+</head>
+<body>
+	<h1>Lunch-O-Matic</h1>
+	<!-- main -->
+	<div class="main">
+		<!--mobile-slider-->
+		<div class=" profile">
+			<div class="banner">
+				<div class="header-top">
+					<ul>
+						<li><span></span></li>
+						<li><span class="chrg"></span> </li>
+						<li>10:00 </li>
+					</ul>
+				</div>
+				<div class="banner-text">
+					<section class="ac-container">
+					</section>
+					<div class="title">
+						<div class="title-left">
+							<img src= {{ url_for('static', filename = "images/img1.jpg") }} alt=""/>
+						</div>
+						<div class="title-right">
+							{% with messages = get_flashed_messages() %}
+							  {% if messages %}
+							    	<h2>{{messages[0]}}</h2>
+							  {% else %}
+								<h2>Pick a group, {{name}}!</h2>
+								<h6>You can join a group if you know the password.</h6>
+								<h6>Otherwise, start your own group!</h6>
+							  {% endif %}
+							{% endwith %}
+						</div>
+						<div class="clear"> </div>
+					</div>
+				</div>
+			</div>
+			<div class="profile-slider">
+				<a href="{{ url_for('join_group')}}" id="join_group" class="skip">JOIN EXISTING GROUP</a>
+				<a href="{{ url_for('new_group')}}" id="new_group" class="skip">CREATE NEW GROUP</a>
+			</div>
+		</div>
+		<!--//mobile-slider-->
+	</div>
+	<div class="copyright">
+		<p> &copy; 2016 Lunch-O-Matic. All rights reserved | Template by <a href="http://w3layouts.com/" target="_blank" >W3layouts</a></p>
+	</div>					
+</body>
+</html>

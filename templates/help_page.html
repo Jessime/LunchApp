@@ -1,0 +1,72 @@
+{% extends "head.html" %}
+{% block body %}
+<body>
+	<h1>Lunch-O-Matic</h1>
+	<!-- main -->
+	<div class="main">
+		<!--mobile-slider-->
+		<div class=" profile">
+			<div class="banner">
+				<div class="header-top">
+					<ul>
+						<li><span class="chrg"></span> </li>
+						<li>{{group}}</li>
+					</ul>
+				</div>
+				<div class="banner-text">
+					<section class="ac-container">
+						<div class="menu">
+							<input id="ac-5" name="accordion-1" type="checkbox" />
+							<label for="ac-5"><img src= {{ url_for('static', filename = "images/menu-icon.png") }} alt=""/></label>
+							<article class="ac-medium">
+								<ul class="nav">
+									<li><a href="{{ url_for('current_weights')}}">Change Preferences</a></li>
+									<li><a href="{{ url_for('index')}}">Home</a></li>
+								</ul> 
+							</article>
+						</div>
+					</section>
+					<div class="title">
+						<div class="title-left">
+							<img src= {{ url_for('static', filename = "images/img1.jpg") }} alt=""/>
+						</div>
+						<div class="title-right">
+							<h2>Hey, {{name}}.</h2>
+							<h6>I'm the Lunch Lady. It's my job to get your group to lunch.</h6>
+						</div>
+						<div class="clear"> </div>
+					</div>
+				</div>
+			</div>
+			<div class="profile-slider help">
+				<h1>Description</h1>
+				We want to fairly and quickly make a group decision about where to go to lunch. <br>That means:
+				<ol>
+  					<li>Everyone get's an equal say in where the group goes.</li>
+  					<li>You shouldn't have to click more than a couple buttons a week to make a decision.</li>
+				</ol>
+				<h1>Basics</h1>
+				The home screen consists of two buttons, 'CHECK IN' and 'PICK LUNCH'. These two buttons are the only ones that have to be clicked before deciding where to eat.
+				<h3>CHECK IN</h3>
+				Because the group is made up of different people each week, we don't want people who aren't present to count in the vote. 
+				Make sure everyone is checked in before picking the restaurant.
+				<h3>PICK LUNCH</h3>
+				The app picks a lunch spot through a simple three-step process:
+				<div>
+				<ol>
+  					<li>It filters all of the group members down to the ones who are currently checked in.</li>
+  					<li>It finds the probability of going to each restaurant, based on how people spent their 10 points.</li>
+					<li>The restaurant is randomly chosen based on these probabilities.</li>
+				</ol>
+				</div>
+				This means that if the group decides they really don't want to go to that spot (maybe you ate there last week), just click 'PICK LUNCH' again.
+				You'll probably get a different answer.
+			</div>
+		</div>
+		<!--//mobile-slider-->
+	</div>
+	<div class="copyright">
+		<p> &copy; 2016 Lunch-O-Matic. All rights reserved | Template by <a href="http://w3layouts.com/" target="_blank" >W3layouts</a></p>
+	</div>					
+</body>
+{% endblock %}

@@ -16,18 +16,17 @@ from flask import flash
 from flask.ext.bcrypt import Bcrypt
 
 import os
+import pandas as pd
 
 from datetime import timedelta
 from random import choice
 from shutil import copyfile
-from pandas import Series, DataFrame, read_csv, read_json
-
 
 ##############################################################################
 # Data handling functions
 ##############################################################################
 def read_groups():
-    groups = read_csv('data/groups.csv', index_col=0)
+    groups = pd.read_csv('data/groups.csv', index_col=0)
     return groups
     
 def write_groups(groups):
@@ -46,7 +45,7 @@ def add_user(group, user):
         copyfile(rand_file, 'data/{}/default/{}'.format(group, user))
         copyfile(rand_file, 'data/{}/current/{}'.format(group, user))        
     else:
-        series = Series(index=['here'], data=[0])
+        series = pd.Series(index=['here'], data=[0])
         series.to_csv('data/{}/default/{}'.format(group, user))
         series.to_csv('data/{}/current/{}'.format(group, user))
         
@@ -55,8 +54,8 @@ def read_full(group, folder='current'):
     series = []
     for u in users:
         path = 'data/{}/{}/{}'.format(group, folder, u)
-        series.append(Series.from_csv(path))
-    return DataFrame(data=series, index=users)
+        series.append(pd.Series.from_csv(path))
+    return pd.DataFrame(data=series, index=users)
     
 def write_full(group, df, folder='current'):
     for series in df.iterrows():
@@ -65,7 +64,7 @@ def write_full(group, df, folder='current'):
         
 def read(group, user, folder='current'):
     path = 'data/{}/{}/{}'.format(group, folder, user)
-    return Series.from_csv(path)
+    return pd.Series.from_csv(path)
     
 def write(group, user, series, folder='current'):
     path = 'data/{}/{}/{}'.format(group, folder, user)
@@ -86,8 +85,8 @@ def make_session_permanent():
 @app.route('/current_weights', methods=['GET', 'POST'])
 def current_weights():
     if request.method == 'POST':
-        series = read_json(request.form['restaurants_field'], typ='series')
-        series.ix['here'] = 1
+        series = pd.read_json(request.form['restaurants_field'], typ='series')
+        series.ix['here'] = 1 #TODO Read this from a file
         write(session['group'], session['username'], series)
         return redirect('/')
     restaurants = read(session['group'], session['username'])
@@ -97,6 +96,14 @@ def current_weights():
                            name=session['username'],
                            restaurants=restaurants.to_dict())
 
+@app.route('/reset')
+def reset():
+    data = read_full(session['group'])
+    data.here.replace(1, 0, inplace=True)
+    write_full(session['group'], data)
+    write_full(session['group'], data, folder='default')
+    return jsonify(result=True)
+    
 @app.route('/more')
 def more():
     return render_template('more.html',
@@ -136,8 +143,19 @@ def del_restaurant():
 @app.route('/table')
 def table():
     table = read_full(session['group'])
-    return render_template('table.html', table=table.to_html(classes='female'))
+    sums = []
+    for col in table:                   #TODO Fix this mess
+        sums.append(table[col].sum())
+    table.ix['Total'] = sums
+    return render_template('table.html', 
+                           table=table.to_html(classes='female'),
+                           group=session['group'])
     
+@app.route('/help_page')
+def help_page():
+    return render_template('help_page.html', 
+                           name=session['username'],
+                           group=session['group'])    
     
 @app.route('/check_in')
 def check_in():
@@ -190,7 +208,7 @@ def new_group():
 @app.route('/join_group', methods=['GET', 'POST'])
 def join_group():
     if request.method == 'POST':
-        all_groups = read_csv('data/groups.csv', index_col=0)
+        all_groups = pd.read_csv('data/groups.csv', index_col=0)
         join = request.form['group']
         submit_pw = request.form['password']
         
@@ -237,5 +255,5 @@ def index():
 if __name__ == '__main__':
     app.debug = True
     port = int(os.environ.get('PORT',5000))
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=port)
     

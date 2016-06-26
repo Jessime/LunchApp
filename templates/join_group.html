@@ -1,32 +1,5 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
-<!DOCTYPE html>
-<html>
-<head>
-<title>Mobile material Flat Responsive Widget Template :: w3layouts</title>
-<!--Custom Theme files-->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Mobile material widget template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login Signup Responsive web template, SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- Custom Theme files -->
-<link href="{{ url_for('static', filename = "css/style.css") }}" rel="stylesheet" type="text/css" media="all" />
-<!--web-fonts-->
-<link href='//fonts.googleapis.com/css?family=Jura:400,300,500,600' rel='stylesheet' type='text/css'>
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = "css/jquery.mmenu.all.css") }}" />
-<!--//web-fonts-->
-<!-- js -->
-<script src= {{ url_for('static', filename = "js/jquery-1.11.1.min.js") }}></script> 
-<script type="text/javascript" src= {{ url_for('static', filename = "js/jquery.mmenu.min.all.js") }}></script>
-<!-- //js -->
-<!-- chart -->
-<script src= {{ url_for('static', filename = "js/Chart.js") }}></script>
-<!-- //chart -->
-</head>
+{% extends "head.html" %}
+{% block body %}
 <body>
 	<h1>Lunch-O-Matic</h1>
 	<!-- main -->
@@ -51,4 +24,4 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<p> &copy; 2016 Mobile material . All rights reserved | Template by <a href="http://w3layouts.com/" target="_blank" >W3layouts</a></p>
 	</div>					
 </body>
-</html>
+{% endblock %}

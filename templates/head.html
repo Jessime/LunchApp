@@ -7,7 +7,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
 <head>
-<title>Mobile material Flat Responsive Widget Template :: w3layouts</title>
+<title>Lunch-O-Matic</title>
 <!--Custom Theme files-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -22,51 +22,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- js -->
 <script src= {{ url_for('static', filename = "js/jquery-1.11.1.min.js") }}></script> 
 <script type="text/javascript" src= {{ url_for('static', filename = "js/jquery.mmenu.min.all.js") }}></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
 <!-- //js -->
-<!-- chart -->
-<script src= {{ url_for('static', filename = "js/Chart.js") }}></script>
-<!-- //chart -->
 </head>
-<body>
-	<h1>Lunch-O-Matic</h1>
-	<!-- main -->
-	<div class="main">
-		<!--mobile-slider-->
-		<div class=" profile">
-			<div class="banner">
-				<div class="header-top">
-					<ul>
-						<li><span></span></li>
-						<li><span class="chrg"></span> </li>
-						<li>10:00 </li>
-					</ul>
-				</div>
-				<div class="banner-text">
-					<section class="ac-container">
-						<div class="menu">
-							<input id="ac-5" name="accordion-1" type="checkbox" />
-							<label for="ac-5"><img src= {{ url_for('static', filename = "images/menu-icon.png") }} alt=""/></label>
-							<article class="ac-medium">
-								<ul class="nav">
-									<li><a href="#">Change Preferences</a></li>
-									<li><a href="#">Reset</a></li>
-									<li><a href="{{ url_for('index')}}">Home</a></li>
-								</ul> 
-							</article>
-						</div>
-					</section>
-					<div class="title">
-					</div>
-				</div>
-			</div>
-			<div class="scroll">
-                    {{table | safe}}
-			</div>
-		</div>
-		<!--//mobile-slider-->
-	</div>
-	<div class="copyright">
-		<p> &copy; 2016 Lunch-O-Matic. All rights reserved | Template by <a href="http://w3layouts.com/" target="_blank" >W3layouts</a></p>
-	</div>					
-</body>
+{% block body %}
+{% endblock %}
 </html>

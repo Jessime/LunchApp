@@ -675,19 +675,19 @@ h1 {
 }
 @media(max-width:800px){
 .main {
-    width: 49%;
+    width: 60%;
 }
 }
 @media(max-width:768px){
 }
 @media(max-width:640px){
 .main {
-    width: 60%;
+    width: 97%;
 }
 }
 @media(max-width:480px){
 .main {
-    width: 78%;
+    width: 97%;
 }
 .banner-text {
     padding: 1.5em 1em 1em 1.5em;
@@ -744,7 +744,7 @@ h1 {
     font-size: 1.6em;
 }
 .main {
-    width: 89%;
+    width: 97%;
     margin: 1.5em auto;
 }
 .login-form {

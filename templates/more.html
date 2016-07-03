@@ -42,8 +42,17 @@
 
 				<a href="{{ url_for('add_restaurant')}}" class="skip">Add Restaurant</a>
 				<a href="{{ url_for('del_restaurant')}}" class="skip">Remove Restaurant</a>
-				<a href="{{ url_for('table')}}" class="skip">Show Table</a>
+				<a href="#" id="pick_lunch" class="skip">Pick Lunch</a>
 				<a href="{{ url_for('help_page')}}" class="skip">Help</a>
+				<script>
+                         $(document).ready(function(){
+                             $("#pick_lunch").click(function(){
+                                 $.getJSON($SCRIPT_ROOT + '/pick_lunch', function(data){
+                                     alert(data.result);
+                                 });
+                             });
+                         });
+				</script>
 			</div>
 		</div>
 		<!--//mobile-slider-->

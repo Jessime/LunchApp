@@ -41,7 +41,7 @@
 			</div>
 			<div class="profile-slider">
 				<a href="#" id="check_in" class="skip">CHECK IN</a>
-				<a href="#" id="pick_lunch" class="skip">PICK LUNCH</a>
+				<a href="{{ url_for('table')}}" class="skip">SHOW TABLE</a>
 				<script>
                          $(document).ready(function(){
                              if({{here|safe}}===1){
@@ -54,23 +54,19 @@
                                      $("#check_in").css("background-color", "#9BFFAC");
                                  });
                              });
-                             $("#pick_lunch").click(function(){
-                                 $.getJSON($SCRIPT_ROOT + '/pick_lunch', function(data){
-                                     alert(data.result);
-                                 });
-                             });
                              $("#reset").click(function(){
                                  if(confirm("Are you sure you want to reset?") === true){
                                      $.getJSON($SCRIPT_ROOT + '/reset', function(data){
                                           $("#check_in").text("CHECK IN");
                                           $("#check_in").css("background-color", "#fff");
-				     });
+            				     });
                                  };
                              });
                          });
 				</script>
 			</div>
 		</div>
+
 		<!--//mobile-slider-->
 	</div>
 	<div class="copyright">

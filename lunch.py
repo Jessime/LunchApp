@@ -17,6 +17,7 @@ from flask.ext.bcrypt import Bcrypt
 
 import os
 import pandas as pd
+import numpy as np
 
 from datetime import timedelta
 from random import choice
@@ -143,10 +144,16 @@ def del_restaurant():
 @app.route('/table')
 def table():
     table = read_full(session['group'])
-    sums = []
-    for col in table:                   #TODO Fix this mess
-        sums.append(table[col].sum())
-    table.ix['Total'] = sums
+    table.ix['CHECKED'] = table[table.here == 1].sum()
+    table = table.drop('here', 1)
+    percent = 100 * table.ix['CHECKED'] / table.ix['CHECKED'].sum()
+    table.ix['PERCENT'] = np.array(percent, dtype=np.int64)
+
+    table = table.transpose()
+    cols = table.columns.tolist()
+    cols = cols[-2:] + cols[:-2]
+    table = table[cols]
+    table = table.sort_values('CHECKED', ascending=False)
     return render_template('table.html', 
                            table=table.to_html(classes='female'),
                            group=session['group'])
@@ -243,11 +250,14 @@ def login():
 @app.route('/', methods=['GET', 'POST'])    
 def index():
     if 'username' in session:
-        here = read(session['group'], session['username'])['here']
-        return render_template('index.html', 
-                               name=session['username'], 
-                               group=session['group'],
-                               here=here)
+        try:
+            here = read(session['group'], session['username'])['here']
+            return render_template('index.html', 
+                                   name=session['username'], 
+                                   group=session['group'],
+                                   here=here)
+        except OSError:
+            return redirect('login')
     else:
         return redirect('login')
 

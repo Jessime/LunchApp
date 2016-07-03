@@ -840,8 +840,8 @@ h1 {
     margin-top: 1.7em;
 }
 .menu input:checked ~ article.ac-medium {
-    height: 136px;
-    width: 91px;
+    height: 110px;
+    width: 103px;
 }
 ul.nav1, ul.nav {
     width: 71px;

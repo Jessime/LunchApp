@@ -1,0 +1,13 @@
+Artisan Pizza,0
+Buns,1
+Carolina Brewery,1
+Carolina Coffee Shop,1
+Chipotle,2
+McCallister's,0
+Med. Deli,2
+Mellow Mushroom,1
+Roots,1
+Spanky's,1
+TOPO,0
+here,1
+Spicy 9,0

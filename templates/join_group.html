@@ -6,11 +6,12 @@
 	<div class="main">
 		<!--signin-form-->
 		<div class="signin-form profile">
-			<h3>Welcome, <span>{{name}}</span></h3>
+			<h3>Join a group, <span>{{name}}</span>!</h3>
+            <!--<h6>Submit the name and password of the group.</h6>-->
 			<img src= {{ url_for('static', filename = "images/img1.jpg") }} alt=""/>
 			<div class="login-form">
 				<form action="" method="post">
-					<input type="text" placeholder="Group123" required="" name="group" value="{{request.form.group}}">
+					<input type="text" placeholder="Pick a group." required="" name="group" value="{{request.form.group}}">
 					<input type="password" placeholder="* * * * * * * * * *" required="" name="password" value="{{request.form.password}}" >
 					<input type="submit" value="JOIN GROUP">
 				</form>
@@ -18,7 +19,6 @@
 		</div>
 		<!--//signin-form-->
 
-	
 	</div>
 	<div class="copyright">
 		<p> &copy; 2016 Mobile material . All rights reserved | Template by <a href="http://w3layouts.com/" target="_blank" >W3layouts</a></p>

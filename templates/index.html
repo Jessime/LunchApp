@@ -42,6 +42,7 @@
 			<div class="profile-slider">
 				<a href="#" id="check_in" class="skip">CHECK IN</a>
 				<a href="{{ url_for('table')}}" class="skip">SHOW TABLE</a>
+				<a href="#" id="pick_lunch" class="skip">Pick Lunch</a>
 				<script>
                          $(document).ready(function(){
                              if({{here|safe}}===1){
@@ -52,6 +53,11 @@
                                  $.getJSON($SCRIPT_ROOT + '/check_in', function(){
                                      $("#check_in").text("CHECKED IN!");
                                      $("#check_in").css("background-color", "#9BFFAC");
+                                 });
+                             });
+                             $("#pick_lunch").click(function(){
+                                 $.getJSON($SCRIPT_ROOT + '/pick_lunch', function(data){
+                                     alert(data.result);
                                  });
                              });
                              $("#reset").click(function(){

@@ -1,6 +1,7 @@
 bcrypt==2.0.0
 cffi==1.7.0
 click==6.6
+dropbox==6.5.0
 Flask==0.11.1
 Flask-Bcrypt==0.7.1
 gunicorn==19.6.0
@@ -8,9 +9,11 @@ itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
 numpy==1.11.0
+pandas==0.18.1
 pycparser==2.14
 python-dateutil==2.5.3
 pytz==2016.4
+requests==2.10.0
 six==1.10.0
+urllib3==1.16
 Werkzeug==0.11.10
-pandas==0.18.1

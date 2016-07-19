@@ -61,6 +61,10 @@ h1 {
     font-size: 1em;
     color: #fff;
 }
+.header-top ul li.reset_date{
+    margin-left: 0em;
+
+}
 .header-top ul li span {
     background: url(../images/i1.png)no-repeat 0px 0px;
     width: 26px;
@@ -71,6 +75,11 @@ h1 {
     background: url(../images/i2.png)no-repeat 0px 0px;
 
 }
+.header-top ul li span.reset{
+    background: url(../images/reset.png)no-repeat 0px 0px;
+
+}
+
 /*--banner-text--*/
 .banner-text {
     padding: 2em 1em 2em 2em;

@@ -108,7 +108,7 @@ class Data():
                               
     @classmethod
     def log_error(self, group, user, error):
-        time = datetime.strftime(datetime.now(), '%Y/%m/%d %H.%M.%S')
+        time = datetime.strftime(datetime.now(), '%Y.%m.%d %H.%M.%S')
         content = "Group: {} \n User: {} \n\n\n {}".format(group, user, error)
         with open(time, 'w') as error_file:
             error_file.write(content)
@@ -143,6 +143,12 @@ def current_weights():
 
 @app.route('/reset')
 def reset():
+    
+    groups = Data.read_groups()
+    date = datetime.strftime(datetime.now(), '%m/%d')
+    groups.set_value(session['group'], 'reset_date', date)
+    Data.write_groups(groups)
+    
     data = Data.read_full(session['group'])
     data.here.replace(1, 0, inplace=True)
     Data.write_full(session['group'], data)
@@ -290,12 +296,14 @@ def login():
 def index():
     try:      
         if 'username' in session:
+            groups = Data.read_groups()
+            reset_date = groups['reset_date'][session['group']]
             here = Data.read(session['group'], session['username'])['here']
             return render_template('index.html', 
                                    name=session['username'], 
                                    group=session['group'],
-                                   here=here)
-            return redirect('login')
+                                   here=here,
+                                   reset_date=reset_date)
         else:
             return redirect('login')
     except Exception:

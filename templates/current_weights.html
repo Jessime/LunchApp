@@ -9,7 +9,8 @@
 			<div class="banner">
 				<div class="header-top">
 					<ul>
-						<li><span class="chrg"></span> </li>
+                                <li><span class="reset"></span></li>
+						<li><span class="chrg"></span></li>
 						<li>{{group}}</li>
 					</ul>
 				</div>
@@ -20,8 +21,8 @@
 							<label for="ac-5"><img src= {{ url_for('static', filename = "images/menu-icon.png") }} alt=""/></label>
 							<article class="ac-medium">
 								<ul class="nav">
-									<li><a href="{{ url_for('current_weights')}}">Change Preferences</a></li>
 									<li><a href="{{ url_for('index')}}">Home</a></li>
+									<li><a href="{{ url_for('more')}}">More</a></li>
 								</ul> 
 							</article>
 						</div>

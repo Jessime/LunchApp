@@ -224,6 +224,8 @@ def pick_lunch():
     filtered_data = filtered_data.drop('here', 1)
     
     restaurant_points = filtered_data.sum(0)
+    if True: #TODO : Make this optional
+        restaurant_points = restaurant_points.nlargest(3)
     restaurant_norm = restaurant_points / restaurant_points.sum()
     try:
         result = restaurant_norm.sample(weights=restaurant_norm).index[0]
@@ -295,7 +297,7 @@ def login():
 @app.route('/', methods=['GET', 'POST'])    
 def index():
     try:      
-        if 'username' in session:
+        if ('username' in session) and ('group' in session):
             groups = Data.read_groups()
             reset_date = groups['reset_date'][session['group']]
             here = Data.read(session['group'], session['username'])['here']
@@ -311,6 +313,6 @@ def index():
         Data.log_error(session['group'], session['username'], error)
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
     port = int(os.environ.get('PORT',5000))
     app.run(host='0.0.0.0', port=port)

@@ -34,14 +34,14 @@ from string import ascii_letters
 ##############################################################################
 
 class Data():
-    DBX = dropbox.Dropbox('zGUHUOeJg4EAAAAAAAAz4CCY7cC7aryG9U0rWQIuLirW-iNQ5ZTzEnDG6RhIDz4n')
+    DBX = dropbox.Dropbox(os.environ['DROPBOX'])
     OVERWRITE = dropbox.files.WriteMode('overwrite')
-    
+
     @classmethod
     def path(self, group, user):
         return '/{}/{}.txt'.format(group, user)
-    
-    @classmethod    
+
+    @classmethod
     def listdir(self, group):
         entries = self.DBX.files_list_folder('/'+group).entries
         files = [e.name for e in entries]
@@ -53,16 +53,16 @@ class Data():
         groups = pd.read_csv(StringIO(content.decode('utf-8')), index_col=0)
         return groups
 
-    @classmethod        
+    @classmethod
     def write_groups(self, groups):
         temp = ''.join(choice(ascii_letters) for i in range(20))
         groups.to_csv(temp)
         self.DBX.files_upload(open(temp), '/groups.csv', mode=self.OVERWRITE)
 
-    @classmethod        
+    @classmethod
     def make_group(self, new):
         self.DBX.files_create_folder(new)
-        
+
     @classmethod
     def add_user(self, group, user):
         users = [u[:-4] for u in self.listdir(group)]
@@ -79,7 +79,7 @@ class Data():
             series = pd.Series(index=['here'], data=[0])
             self.write(group, user, series)
 
-    @classmethod            
+    @classmethod
     def read_full(self, group):
         users = [u[:-4] for u in self.listdir(group)]
         series = []
@@ -87,25 +87,25 @@ class Data():
             series.append(self.read(group, u))
         return pd.DataFrame(data=series, index=users)
 
-    @classmethod        
+    @classmethod
     def write_full(self, group, df):
         for series in df.iterrows():
             self.write(group, series[0], series[1])
-            
+
     @classmethod
     def read(self, group, user):
         content = self.DBX.files_download(self.path(group, user))[1].content
         series = pd.Series.from_csv(StringIO(content.decode('utf-8')), index_col=0)
         return series
-        
+
     @classmethod
     def write(self, group, user, series):
         temp = ''.join(choice(ascii_letters) for i in range(20))
         series.to_csv(temp)
-        self.DBX.files_upload(open(temp), 
-                              self.path(group, user), 
+        self.DBX.files_upload(open(temp),
+                              self.path(group, user),
                               mode=self.OVERWRITE)
-                              
+
     @classmethod
     def log_error(self, group, user, error):
         time = datetime.strftime(datetime.now(), '%Y.%m.%d %H.%M.%S')
@@ -113,7 +113,7 @@ class Data():
         with open(time, 'w') as error_file:
             error_file.write(content)
         self.DBX.files_upload(open(time), '/errors/{}.txt'.format(time))
-        
+
 ##############################################################################
 ##############################################################################
 
@@ -125,15 +125,15 @@ bcrypt = Bcrypt(app)
 def make_session_permanent():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(days=365)
-    
+
 @app.route('/current_weights', methods=['GET', 'POST'])
 def current_weights():
     if request.method == 'POST':
         series = pd.read_json(request.form['restaurants_field'], typ='series')
-        series.ix['here'] = 1 
+        series.ix['here'] = 1
         Data.write(session['group'], session['username'], series)
         return redirect('/')
-        
+
     restaurants = Data.read(session['group'], session['username'])
     restaurants = restaurants.drop('here')
     return render_template('current_weights.html',
@@ -143,23 +143,23 @@ def current_weights():
 
 @app.route('/reset')
 def reset():
-    
+
     groups = Data.read_groups()
     date = datetime.strftime(datetime.now(), '%m/%d')
     groups.set_value(session['group'], 'reset_date', date)
     Data.write_groups(groups)
-    
+
     data = Data.read_full(session['group'])
     data.here.replace(1, 0, inplace=True)
     Data.write_full(session['group'], data)
     return jsonify(result=True)
-    
+
 @app.route('/more')
 def more():
     return render_template('more.html',
                            name=session['username'],
                            group=session['group'])
-    
+
 @app.route('/add_restaurant', methods=['GET', 'POST'])
 def add_restaurant():
     if request.method == 'POST':
@@ -169,7 +169,7 @@ def add_restaurant():
             data[rest] = [0]*data.shape[0]
             Data.write_full(session['group'], data)
         return redirect('/')
-            
+
     return render_template('add_restaurant.html')
 
 @app.route('/del_restaurant', methods=['GET', 'POST'])
@@ -181,15 +181,15 @@ def del_restaurant():
             data.drop(rest, axis=1, inplace=True)
             Data.write_full(session['group'], data)
         return redirect('/')
-            
+
     return render_template('del_restaurant.html')
-    
+
 @app.route('/table')
 def table():
     data = Data.read_full(session['group'])
     data.ix['CHECKED'] = data[data.here == 1].sum()
     data = data.drop('here', 1)
-    
+
     checked_sum = data.ix['CHECKED'].sum()
     if checked_sum > 0:
         percent = 100 * data.ix['CHECKED'] / checked_sum
@@ -200,29 +200,29 @@ def table():
     cols = cols[-2:] + cols[:-2]
     data = data[cols]
     data = data.sort_values('CHECKED', ascending=False)
-    return render_template('table.html', 
+    return render_template('table.html',
                            table=data.to_html(classes='female'),
                            group=session['group'])
-    
+
 @app.route('/help_page')
 def help_page():
-    return render_template('help_page.html', 
+    return render_template('help_page.html',
                            name=session['username'],
-                           group=session['group'])    
-    
+                           group=session['group'])
+
 @app.route('/check_in')
 def check_in():
     series = Data.read(session['group'], session['username'])
     series.here = 1
     Data.write(session['group'], session['username'], series)
     return jsonify(result=True)
-    
+
 @app.route('/pick_lunch')
 def pick_lunch():
     data = Data.read_full(session['group'])
     filtered_data = data[data.here == 1]
     filtered_data = filtered_data.drop('here', 1)
-    
+
     restaurant_points = filtered_data.sum(0)
     if True: #TODO : Make this optional
         restaurant_points = restaurant_points.nlargest(3)
@@ -254,7 +254,7 @@ def new_group():
             session['group'] = new
             Data.add_user(new, session['username'])
             return redirect('/')
-        else: 
+        else:
             flash('This group already exists. Please choose a new name.')
             redirect('new_group')
     return render_template('new_group.html', name=session['username'])
@@ -265,7 +265,7 @@ def join_group():
         all_groups = Data.read_groups()
         join = request.form['group']
         submit_pw = request.form['password']
-        
+
         if join in all_groups.index:
 
             hash_pw = all_groups.ix[join]['password']
@@ -277,32 +277,32 @@ def join_group():
         else:
             flash('That was not an existing group. Try again or make a new group.')
             return redirect('new_or_join_group')
-            
+
     return render_template('join_group.html', name=session['username'])
-    
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     make_session_permanent()
     if request.method == 'POST':
         session['username'] = request.form['username']
         session['password'] = request.form['password']
-        
+
         return redirect('/new_or_join_group')
-    
+
     return render_template('login.html')
 
 ##############################################################################
 ##############################################################################
 
-@app.route('/', methods=['GET', 'POST'])    
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    try:      
+    try:
         if ('username' in session) and ('group' in session):
             groups = Data.read_groups()
             reset_date = groups['reset_date'][session['group']]
             here = Data.read(session['group'], session['username'])['here']
-            return render_template('index.html', 
-                                   name=session['username'], 
+            return render_template('index.html',
+                                   name=session['username'],
                                    group=session['group'],
                                    here=here,
                                    reset_date=reset_date)
